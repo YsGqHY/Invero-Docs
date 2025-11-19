@@ -1,0 +1,93 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+    - uses: actions/checkout@v4
+
+    - uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+        
+    - uses: pnpm/action-setup@v4
+        
+    - name: Get pnpm store
+      run: echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+        
+    - uses: actions/cache@v4
+      with:
+        path: ${{ env.STORE_PATH }}
+        key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+        restore-keys: ${{ runner.os }}-pnpm-store-
+
+    - run: pnpm install --frozen-lockfile
+      
+    - run: pnpm build
+      env:
+        NODE_OPTIONS: --max-old-space-size=4096
+
+    # 测试 SSH 连接
+    - name: Test SSH Connection
+      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      uses: appleboy/ssh-action@v1.1.0
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        port: ${{ secrets.SSH_PORT }}
+        script: |
+          echo "✅ SSH 连接成功！"
+          echo "服务器主机名: $(hostname)"
+          echo "当前用户: $(whoami)"
+          echo "服务器时间: $(date)"
+          echo "目标目录检查:"
+          ls -la ${{ secrets.TARGET_DIR }} || echo "目标目录不存在，将在部署时创建"
+
+    # 配置 SSH 密钥
+    - name: Setup SSH Key
+      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > /tmp/deploy_key
+        chmod 600 /tmp/deploy_key
+        ssh-keyscan -p ${{ secrets.SSH_PORT }} -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+        echo "✅ SSH 密钥配置完成"
+
+    # 使用 Python 脚本增量部署
+    - name: Incremental Deploy with Python
+      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      env:
+        BUILD_DIR: ./build
+        SSH_HOST: ${{ secrets.SSH_HOST }}
+        SSH_USER: ${{ secrets.SSH_USER }}
+        SSH_KEY_PATH: /tmp/deploy_key
+        SSH_PORT: ${{ secrets.SSH_PORT }}
+        TARGET_DIR: ${{ secrets.TARGET_DIR }}
+        FAST_MODE: true  # 启用快速模式，跳过哈希计算，直接使用 rsync 增量算法
+      run: |
+        chmod +x .github/scripts/incremental_deploy.py
+        python3 .github/scripts/incremental_deploy.py
+
+    # 验证部署结果
+    - name: Verify deployment
+      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      uses: appleboy/ssh-action@v1.1.0
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        port: ${{ secrets.SSH_PORT }}
+        script: |
+          echo "验证部署结果..."
+          ls -lah ${{ secrets.TARGET_DIR }}
+          echo "✅ 部署完成！"
