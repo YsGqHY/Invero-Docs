@@ -19,14 +19,14 @@ const config = {
         },
     },
     title: 'Invero',
-    url: IS_CHINA_SITE ? 'https://invero.8aka.cn' : 'https://invero.8aka.org',
+    url: 'https://invero.hhhhhy.kim',
 
     baseUrl: '/',
     onBrokenLinks: 'ignore',
     onBrokenMarkdownLinks: 'ignore',
     favicon: 'img/invero_logo.png',
 
-    organizationName: '8aka-Team',
+    organizationName: 'YsGqHY',
     projectName: 'Invero-Docs',
 
     i18n: {
@@ -80,7 +80,7 @@ const config = {
         /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
         ({
             giscus: {
-                repo: '8aka-Team/Invero-Docs',
+                repo: 'YsGqHY/Invero-Docs',
                 repoId: 'R_kgDOOFEX-w',
                 category: 'General',
                 categoryId: 'DIC_kwDOOFEX-84Cnupi'
@@ -121,7 +121,7 @@ const config = {
                         className: 'header-locale-link',
                     },
                     {
-                        href: 'https://github.com/8aka-Team/Invero',
+                        href: 'https://github.com/iiabc/Invero',
                         position: 'right',
                         className: 'header-github-link',
                         label: 'GitHub',
@@ -150,7 +150,7 @@ const config = {
                             },
                             {
                                 label: 'GitHub',
-                                href: 'https://github.com/8aka-Team/Invero-Docs',
+                                href: 'https://github.com/YsGqHY/Invero-Docs',
                             },
                             {
                                 label: 'Lythrilla个人主页',

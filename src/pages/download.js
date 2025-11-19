@@ -51,7 +51,7 @@ function MobileHeroSection() {
           </Link>
           <a
             className={styles.mobileActionButton}
-            href="https://github.com/8aka-Team/Invero"
+            href="https://github.com/iiabc/Invero"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -159,7 +159,7 @@ function DesktopHeroSection({ activeVersion, setActiveVersion, releases, isLoadi
             </div>
             <div className={styles.actionArrow}>→</div>
           </Link>
-          <a className={styles.actionLink} href="https://github.com/8aka-Team/Invero" target="_blank" rel="noopener noreferrer">
+          <a className={styles.actionLink} href="https://github.com/iiabc/Invero" target="_blank" rel="noopener noreferrer">
             <div className={styles.actionIcon}>💻</div>
             <div className={styles.actionContent}>
               <span className={styles.actionText}>
@@ -345,7 +345,7 @@ function DevelopmentBuildGrid() {
 
     try {
       // 获取构建信息
-      const response = await fetch(`https://api.github.com/repos/8aka-Team/Invero/actions/runs?per_page=20&page=${pageNum}`);
+      const response = await fetch(`https://api.github.com/repos/iiabc/Invero/actions/runs?per_page=20&page=${pageNum}`);
 
       if (!response.ok) {
         throw new Error('获取GitHub Actions数据失败');
@@ -364,7 +364,7 @@ function DevelopmentBuildGrid() {
           let commitMessage = '获取提交信息失败';
           try {
             // 获取提交信息
-            const commitResponse = await fetch(`https://api.github.com/repos/8aka-Team/Invero/commits/${run.head_sha}`);
+            const commitResponse = await fetch(`https://api.github.com/repos/iiabc/Invero/commits/${run.head_sha}`);
             if (commitResponse.ok) {
               const commitData = await commitResponse.json();
               commitMessage = commitData.commit.message.split('\n')[0]; // 只取第一行
@@ -384,7 +384,7 @@ function DevelopmentBuildGrid() {
             branch: run.head_branch || 'unknown',
             date: new Date(run.created_at).toLocaleDateString(),
             status: run.conclusion || 'pending',
-            downloadUrl: `https://github.com/8aka-Team/Invero/actions/runs/${run.id}`,
+            downloadUrl: `https://github.com/iiabc/Invero/actions/runs/${run.id}`,
             commitMessage,
             commitSha: run.head_sha?.substring(0, 7) || 'unknown'
           };
@@ -504,7 +504,7 @@ function DevelopmentBuildList() {
 
     try {
       // 获取构建信息
-      const response = await fetch(`https://api.github.com/repos/8aka-Team/Invero/actions/runs?per_page=20&page=${pageNum}`);
+      const response = await fetch(`https://api.github.com/repos/iiabc/Invero/actions/runs?per_page=20&page=${pageNum}`);
 
       if (!response.ok) {
         throw new Error('获取GitHub Actions数据失败');
@@ -523,7 +523,7 @@ function DevelopmentBuildList() {
           let commitMessage = '获取提交信息失败';
           try {
             // 获取提交信息
-            const commitResponse = await fetch(`https://api.github.com/repos/8aka-Team/Invero/commits/${run.head_sha}`);
+            const commitResponse = await fetch(`https://api.github.com/repos/iiabc/Invero/commits/${run.head_sha}`);
             if (commitResponse.ok) {
               const commitData = await commitResponse.json();
               commitMessage = commitData.commit.message.split('\n')[0]; // 只取第一行
@@ -540,7 +540,7 @@ function DevelopmentBuildList() {
             branch: run.head_branch || 'unknown',
             date: new Date(run.created_at).toLocaleDateString(),
             status: run.conclusion || 'pending',
-            downloadUrl: `https://github.com/8aka-Team/Invero/actions/runs/${run.id}`,
+            downloadUrl: `https://github.com/iiabc/Invero/actions/runs/${run.id}`,
             commitMessage,
             commitSha: run.head_sha?.substring(0, 7) || 'unknown'
           };
@@ -816,7 +816,7 @@ function ErrorState({ error }) {
       <p className={styles.errorMessage}>{error}</p>
       <div className={styles.errorAction}>
         <a
-          href="https://github.com/8aka-Team/Invero/releases"
+          href="https://github.com/iiabc/Invero/releases"
           className={styles.actionButton}
           target="_blank"
           rel="noopener noreferrer"
@@ -850,7 +850,7 @@ function EmptyState() {
       </p>
       <div className={styles.emptyAction}>
         <a
-          href="https://github.com/8aka-Team/Invero"
+          href="https://github.com/iiabc/Invero"
           className={styles.actionButton}
           target="_blank"
           rel="noopener noreferrer"
@@ -980,7 +980,7 @@ export default function DownloadPage() {
 
   useEffect(() => {
     // GitHub API 请求获取 releases
-    fetch('https://api.github.com/repos/8aka-Team/Invero/releases')
+    fetch('https://api.github.com/repos/iiabc/Invero/releases')
       .then(response => {
         if (!response.ok) {
           throw new Error(translate({

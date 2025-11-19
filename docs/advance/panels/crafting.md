@@ -37,7 +37,7 @@ sidebar_position: 6
 
 ![](/post/example_convert.gif)
 
-- https://github.com/8aka-Team/Invero/blob/main/src/main/resources/default/crafting_apple.yml
+- https://github.com/iiabc/Invero/blob/main/src/main/resources/default/crafting_apple.yml
 
 ### 垃圾桶
 

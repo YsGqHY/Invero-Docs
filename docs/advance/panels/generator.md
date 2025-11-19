@@ -166,7 +166,7 @@ generator:
 
 ![](/post/example_sounds.gif)
 
-- https://github.com/8aka-Team/Invero/blob/main/src/main/resources/default/generator_sounds.yml
+- https://github.com/iiabc/Invero/blob/main/src/main/resources/default/generator_sounds.yml
 
 ### tpa选人菜单
 
