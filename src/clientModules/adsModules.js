@@ -1,5 +1,6 @@
 // src/clientModules/adModule.js
 import ExecutionEnvironment from '@docusaurus/ExecutionEnvironment';
+import { customAds } from '../config/adsConfig';
 
 async function injectExternLink() {
     try {
@@ -14,12 +15,14 @@ async function injectExternLink() {
             return;
         }
 
-        // 2. 获取广告数据
-        const response = await fetch('https://ad-api.8aka.org/ads');
-        const links = await response.json();
+        // 2. 从配置文件获取广告数据
+        const links = customAds;
 
         // 3. 验证数据格式
-        if (!Array.isArray(links) || links.length === 0) return;
+        if (!Array.isArray(links) || links.length === 0) {
+            console.log('No ads configured or ads array is empty');
+            return;
+        }
 
         // 4. 创建广告容器
         const adContainer = document.createElement('div');
